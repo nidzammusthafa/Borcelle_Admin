@@ -1,12 +1,13 @@
 "use client";
 
 import { DataTable } from "@/components/custom_ui/DataTable";
-import { columns } from "@/components/collections/CollectionColumn";
+import { columns } from "@/components/collections/CollectionColumns";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Loader from "@/components/custom_ui/Loader";
 
 const Collections = () => {
   const [loading, setLoading] = useState(true);
@@ -46,7 +47,12 @@ const Collections = () => {
           </Button>
         </div>
         <Separator className="bg-grey-1 my-4" />
-        <DataTable columns={columns} data={collections} searchKey="title" />
+
+        {loading ? (
+          <Loader />
+        ) : (
+          <DataTable columns={columns} data={collections} searchKey="title" />
+        )}
       </div>
     </>
   );

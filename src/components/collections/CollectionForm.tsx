@@ -61,7 +61,6 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setLoading(true);
       const url = initialData
         ? `/api/collections/${initialData._id}`
         : "/api/collections";
@@ -88,7 +87,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
         <>
           <div className="flex items-center justify-between">
             <p className="text-heading2-bold">Edit Collection</p>
-            <Delete id={initialData._id} />
+            <Delete item="collection" id={initialData._id} />
           </div>
         </>
       ) : (
@@ -158,7 +157,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
             <Button
               type="button"
               className="bg-blue-1 text-white"
-              onClick={() => router.push("/collections/new")}
+              onClick={() => router.push("/collections")}
             >
               Discard
             </Button>

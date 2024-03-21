@@ -1,7 +1,56 @@
-import React from "react";
+"use client";
+
+import { DataTable } from "@/components/custom_ui/DataTable";
+import Loader from "@/components/custom_ui/Loader";
+import { columns } from "@/components/products/ProductColumns";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 const ProductPage = () => {
-  return <div>ProductPage</div>;
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<ProductType[]>([]);
+
+  const getProducts = async () => {
+    try {
+      const response = await fetch("/api/products", {
+        method: "GET",
+      });
+      const data = await response.json();
+      setProducts(data);
+      setLoading(false);
+    } catch (error) {
+      console.log("[products_GET]", error);
+    }
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  return (
+    <div className="px-10 py-5">
+      <div className="flex items-center justify-between">
+        <p className="text-heading2-bold">Products</p>
+        <Button
+          className="bg-blue-1 text-white"
+          onClick={() => router.push("/products/new")}
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Create Product
+        </Button>
+      </div>
+      <Separator className="bg-grey-1 my-4" />
+      {loading ? (
+        <Loader />
+      ) : (
+        <DataTable columns={columns} data={products} searchKey="title" />
+      )}
+    </div>
+  );
 };
 
 export default ProductPage;
